@@ -1,0 +1,119 @@
+/* ParseForm.css */
+.parse-form-container {
+  position: absolute;
+  right: 50%;
+  bottom: 1rem;
+  transform: translateX(50%);
+
+  z-index: 1000;
+  /* Dark gray background */
+  background: #262626;
+  padding: 1.5rem;
+  border-radius: 8px;
+  /* Subtle border */
+  border: 1px solid #444;
+  /* Stronger shadow */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  width: 100%;
+  /* Adjust width as needed here */
+  max-width: 600px;
+  margin: 0 auto;
+
+  @media (max-width: 1250px) {
+    max-width: 300px;
+  }
+}
+
+.parse-form-container h2 {
+  margin-bottom: 1.5rem;
+  color: #e0e0e0;
+  /* Light gray text */
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.parse-textarea {
+  width: 100%;
+  padding: 0.75rem;
+  background: #333;
+  /* Dark input background */
+  border: 1px solid #555;
+  /* Dark border */
+  border-radius: 4px;
+  font-size: 1rem;
+  color: #e0e0e0;
+  /* Light text */
+  outline: none;
+  transition: border-color 0.3s ease;
+  resize: none;
+  box-sizing: border-box;
+  /* Allow vertical resizing */
+}
+
+.parse-textarea:focus {
+  border-color: #ff6b6b;
+  /* Bright red for focus */
+}
+
+.parse-button {
+  width: 100%;
+  padding: 0.75rem;
+  background: #ff6b6b;
+  /* Bright red button */
+  color: #1a1a1a;
+  /* Dark text */
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  margin-top: 1rem;
+}
+
+.parse-button:hover {
+  background: #ff4d4d;
+}
+
+.parse-button:disabled {
+  background: grey;
+}
+
+.parsed-fields {
+  margin-top: 0.5rem;
+}
+
+.parsed-fields-group {
+  display: flex;
+  gap: 8px;
+}
+
+.parsed-field {
+  flex: 1;
+  width: 100%;
+  padding: 0.75rem;
+  background: #333;
+  /* Dark input background */
+  border: 1px solid #555;
+  /* Dark border */
+  border-radius: 4px;
+  font-size: 1rem;
+  color: #e0e0e0;
+  /* Light text */
+  outline: none;
+  transition: border-color 0.3s ease;
+  margin-bottom: 0.5rem;
+  box-sizing: border-box;
+}
+
+.parsed-field:last-child {
+  margin-bottom: 0;
+}
+
+.parsed-field:focus {
+  border-color: #ff6b6b;
+  /* Bright red for focus */
+}

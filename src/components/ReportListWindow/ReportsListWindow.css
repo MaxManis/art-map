@@ -1,0 +1,99 @@
+.floating-list-window {
+  position: fixed;
+  top: 58px;
+  right: 100px;
+  background: #262626;
+  /* Dark gray background */
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #444;
+  /* Subtle border */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  /* Stronger shadow */
+  width: 100%;
+  max-width: 370px;
+  /* Adjust width as needed */
+  max-height: 80vh;
+  /* Limit height to 80% of viewport */
+  overflow-y: auto;
+  /* Enable vertical scrolling */
+  z-index: 1001;
+}
+
+.floating-list-window-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.floating-list-window h2 {
+  margin-bottom: 0.5rem;
+  margin-top: 0;
+  color: #e0e0e0;
+  /* Light gray text */
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.floating-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  /* Space between items */
+}
+
+.floating-list-item {
+  background: #333;
+  /* Darker background for items */
+  padding: 1rem;
+  border-radius: 4px;
+  border: 1px solid #444;
+  /* Subtle border */
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  /* Space between fields */
+}
+
+.floating-list-item-field {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.floating-list-field-label {
+  color: #b0b0b0;
+  /* Medium gray text */
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.floating-list-field-value {
+  color: #e0e0e0;
+  /* Light text */
+  font-size: 1rem;
+}
+
+.floating-list-action-button {
+  width: 100%;
+  padding: 0.5rem;
+  background: #ff6b6b;
+  /* Bright red button */
+  color: #1a1a1a;
+  /* Dark text */
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.floating-list-action-button:hover {
+  background: #ff4d4d;
+  /* Darker red on hover */
+}
