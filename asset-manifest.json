@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/art-map/static/css/main.1f6021f1.css",
+    "main.js": "/art-map/static/js/main.29f75545.js",
+    "static/media/UAF.png": "/art-map/static/media/UAF.1569edb439764eb94ff1.png",
+    "index.html": "/art-map/index.html",
+    "main.1f6021f1.css.map": "/art-map/static/css/main.1f6021f1.css.map",
+    "main.29f75545.js.map": "/art-map/static/js/main.29f75545.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.1f6021f1.css",
+    "static/js/main.29f75545.js"
+  ]
+}
