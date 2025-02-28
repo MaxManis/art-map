@@ -2,6 +2,7 @@ import React, { useReducer, createContext } from "react";
 
 // Initial state
 const initialState = {
+  page: "Map", // AdminMap | Table
   user: null,
   token: window.localStorage.getItem("auth-token"),
   reports: [],
@@ -35,6 +36,8 @@ const globalStateReducer = (state, action) => {
       return { ...state, loading: action.payload };
     case "SET_EDIT":
       return { ...state, editReport: action.payload };
+    case "SET_PAGE":
+      return { ...state, page: action.payload };
     default:
       return state;
   }

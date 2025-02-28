@@ -22,8 +22,32 @@
 
 .floating-list-window-header {
   display: flex;
-  align-items: center;
+  /*align-items: center; */
+  justify-content: space-between;
   gap: 12px;
+}
+
+.floating-list-window-header-rows {
+  display: flex;
+  flex-direction: column;
+  align-items: space-between;
+  gap: 4px;
+  min-width: 150px;
+}
+
+.floating-list-window-header-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.floating-list-window-header-button {
+  text-align: center;
+  color: white;
+  background-color: black;
+  border-color: darkred;
+  border-radius: 4px;
+  letter-spacing: 1px;
+  cursor: pointer;
 }
 
 .floating-list-window h2 {

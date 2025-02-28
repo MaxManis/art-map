@@ -1,7 +1,8 @@
 import { useContext, useEffect, useState } from "react";
 import { httpClient } from "../../api/httpClient";
 import { GlobalStateContext } from "../../context/GlobalStateContext";
-import { CheckMarkIcon, CloseIcon, TrashBoxIcon } from "../icons";
+import { sleep } from "../../utils/sleep";
+import { CheckMarkIcon, CloseIcon, MapIcon, TrashBoxIcon } from "../icons";
 import "./Modal.css";
 
 export const Modal = () => {
@@ -11,7 +12,7 @@ export const Modal = () => {
 
   const handleSave = () => {
     return;
-    //TODO: enable when saving is ready on BE and FE
+    //TODO: enable when editing is ready on BE and FE
     //dispatch({ type: "SET_LOADING", payload: true });
     //try {
     //  await httpClient.put(`/reports/${report?._id}`, token, report, false);
@@ -21,6 +22,12 @@ export const Modal = () => {
     //  console.error(err);
     //}
     //dispatch({ type: "SET_LOADING", payload: false });
+  };
+  const handleShowOnMap = async () => {
+    dispatch({ type: "SET_PAGE", payload: "AdminMap" });
+    await sleep(150);
+    dispatch({ type: "SET_REPORTS_TO_SHOW", payload: [report] });
+    handleClose();
   };
   const handleClose = () => {
     dispatch({ type: "SET_EDIT", payload: null });
@@ -117,6 +124,15 @@ export const Modal = () => {
             </div>
           </div>
           <div className="modal-buttons-group">
+            <button
+              className="map-admin-panel-button-blue"
+              onClick={handleShowOnMap}
+            >
+              <div className="button-content-with-icon">
+                <MapIcon />
+                На мапі
+              </div>
+            </button>
             <button
               className="map-admin-panel-button-blue"
               onClick={handleSave}

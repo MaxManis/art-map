@@ -1,14 +1,23 @@
 {
   "name": "Art Map EmAAA",
-  "version": "0.9.0",
+  "version": "0.9.5",
   "private": false,
   "homepage": "https://MaxManis.github.io/art-map",
+  "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@mui/material": "^6.4.3",
     "axios": "^1.7.9",
     "cra-template": "1.2.0",
+    "csv-stringify": "^6.5.2",
     "leaflet": "^1.9.4",
     "mgrs": "^2.1.0",
     "react": "^19.0.0",
@@ -17,13 +26,8 @@
     "react-leaflet": "^5.0.0",
     "react-scripts": "5.0.1"
   },
-  "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+  "devDependencies": {
+    "gh-pages": "^6.3.0"
   },
   "eslintConfig": {
     "extends": [
@@ -42,8 +46,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "gh-pages": "^6.3.0"
   }
 }

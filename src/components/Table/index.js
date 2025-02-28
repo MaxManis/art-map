@@ -2,7 +2,8 @@ import React, { useContext, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { GlobalStateContext } from "../../context/GlobalStateContext";
-import { OpenIcon } from "../icons";
+import { saveToCsvFile } from "../../utils/savaToCsvFile";
+import { OpenIcon, ResetIcon, DownloadIcon } from "../icons";
 import "./Table.css"; // Reuse the miltech-style CSS
 
 export const Table = ({ data, columns: initialColumns }) => {
@@ -11,8 +12,17 @@ export const Table = ({ data, columns: initialColumns }) => {
   const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
   const [searchTerm, setSearchTerm] = useState("");
   const [dateFilter, setDateFilter] = useState(null);
+  const [dateFilterTo, setDateFilterTo] = useState(null);
 
-  const { state, dispatch } = useContext(GlobalStateContext);
+  const { dispatch } = useContext(GlobalStateContext);
+
+  const handleFilterReset = () => {
+    setDateFilter(null);
+    setDateFilterTo(null);
+    setFilters({});
+    setSortConfig({ key: null, direction: "asc" });
+    setSearchTerm("");
+  };
 
   const rowAction = (row) => {
     dispatch({ type: "SET_EDIT", payload: row });
@@ -37,9 +47,14 @@ export const Table = ({ data, columns: initialColumns }) => {
     setSearchTerm(e.target.value);
   };
 
-  // Handle date filter
+  // Handle date from filter
   const handleDateFilter = (date) => {
     setDateFilter(date);
+  };
+
+  // Handle date to filter
+  const handleDateToFilter = (date) => {
+    setDateFilterTo(date);
   };
 
   // Apply sorting, filtering, and search
@@ -71,6 +86,15 @@ export const Table = ({ data, columns: initialColumns }) => {
     if (dateFilter) {
       filteredData = filteredData.filter((row) => {
         const rowDate = new Date(row.date); // Assuming 'date' is the key for the date column
+
+        if (dateFilterTo) {
+          const target = rowDate.getTime();
+          const from = dateFilter.getTime();
+          const to = dateFilterTo.getTime();
+
+          const withinRange = target >= from && target <= to;
+          return withinRange;
+        }
         return rowDate.toDateString() === dateFilter.toDateString();
       });
     }
@@ -91,27 +115,72 @@ export const Table = ({ data, columns: initialColumns }) => {
     return filteredData;
   };
 
+  const dataToShow = getFilteredData();
+
+  const handleSaveToCsv = () => {
+    saveToCsvFile(dataToShow);
+  };
+
   return (
     <div className="table-container">
       {/* Search Bar */}
       <div className="search-bar">
         <input
           type="text"
-          placeholder="Search..."
+          placeholder="Пошук..."
           value={searchTerm}
           onChange={handleSearch}
           className="search-input"
         />
 
         {/* Date Filter */}
-        <div className="date-filter">
+        <div className="search-date">
+          <div className="floating-list-window-header-rows">
+            <div className="floating-list-window-header-row">
+              <span>Усього:</span>
+              <span>{data.length}шт.</span>
+            </div>
+            <div className="floating-list-window-header-row">
+              <span>Видимі:</span>
+              <span>{dataToShow.length}шт.</span>
+            </div>
+          </div>
+
           <DatePicker
             selected={dateFilter}
             onChange={handleDateFilter}
-            placeholderText="Filter by date"
-            dateFormat="yyyy-MM-dd"
+            placeholderText="Дата від"
+            dateFormat="dd-MM-yyyy"
             className="date-picker"
           />
+          <DatePicker
+            selected={dateFilterTo}
+            onChange={handleDateToFilter}
+            placeholderText="Дата до"
+            dateFormat="dd-MM-yyyy"
+            className="date-picker"
+          />
+
+          <button
+            style={{ width: "fit-content" }}
+            className="map-admin-panel-button"
+            onClick={handleFilterReset}
+          >
+            <div className="button-content-with-icon">
+              <ResetIcon />
+              Зкинути фільтри
+            </div>
+          </button>
+          <button
+            style={{ width: "fit-content" }}
+            className="map-admin-panel-button"
+            onClick={handleSaveToCsv}
+          >
+            <div className="button-content-with-icon">
+              <DownloadIcon />
+              Зберегти у .CSV
+            </div>
+          </button>
         </div>
       </div>
 
@@ -135,7 +204,7 @@ export const Table = ({ data, columns: initialColumns }) => {
                 </div>
                 <input
                   type="text"
-                  placeholder={`Filter ${column.label}`}
+                  placeholder={`Пошук за ${column.label}`}
                   value={filters[column.key] || ""}
                   onChange={(e) => handleFilter(column.key, e.target.value)}
                   className="filter-input"
@@ -145,7 +214,7 @@ export const Table = ({ data, columns: initialColumns }) => {
           </tr>
         </thead>
         <tbody>
-          {getFilteredData().map((row, rowIndex) => (
+          {dataToShow.map((row, rowIndex) => (
             <tr key={rowIndex}>
               {columns.map((column) =>
                 column.key === "action" ? (

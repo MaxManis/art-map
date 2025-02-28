@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { GlobalStateContext } from "../../context/GlobalStateContext";
 import UAFimg from "../../imgs/UAF.png";
 import "./Menu.css"; // Reuse the miltech-style CSS
 
 export const Menu = ({ onPageChange }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [activePage, setActivePage] = useState("Map"); // Default active page
+  const { state, dispatch } = useContext(GlobalStateContext);
+  const { page } = state;
 
   const handlePageChange = (page) => {
-    setActivePage(page);
-    onPageChange(page); // Notify the parent component about the page change
+    dispatch({ type: "SET_PAGE", payload: page });
     setIsMenuOpen(false); // Close the menu after selecting a page
   };
 
@@ -34,19 +35,19 @@ export const Menu = ({ onPageChange }) => {
         <div className="menu-items">
           <div>
             <button
-              className={`menu-item ${activePage === "Map" ? "active" : ""}`}
+              className={`menu-item ${page === "Map" ? "active" : ""}`}
               onClick={() => handlePageChange("Map")}
             >
               Звітувати
             </button>
             <button
-              className={`menu-item ${activePage === "AdminMap" ? "active" : ""}`}
+              className={`menu-item ${page === "AdminMap" ? "active" : ""}`}
               onClick={() => handlePageChange("AdminMap")}
             >
               Мапа звітів
             </button>
             <button
-              className={`menu-item ${activePage === "Table" ? "active" : ""}`}
+              className={`menu-item ${page === "Table" ? "active" : ""}`}
               onClick={() => handlePageChange("Table")}
             >
               Таблиця звітів

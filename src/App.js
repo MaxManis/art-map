@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { httpClient } from "./api/httpClient";
 import { Menu } from "./components/Menu";
 import { SignWindow } from "./components/SignWindow";
@@ -10,9 +10,8 @@ import { LoaderScreen } from "./components/Loader";
 import "./App.css";
 
 function App() {
-  const [activePage, setActivePage] = useState("Map");
   const { state, dispatch } = useContext(GlobalStateContext);
-  const { user, token, loading } = state;
+  const { user, token, loading, page } = state;
 
   const getMe = async () => {
     if (user || !token) {
@@ -45,7 +44,7 @@ function App() {
   }, [token]);
 
   const renderPage = () => {
-    switch (activePage) {
+    switch (page) {
       case "Map":
         return <UserMapPage />;
       case "AdminMap":
@@ -62,7 +61,7 @@ function App() {
       {loading && <LoaderScreen />}
       {user ? (
         <div className="app-container">
-          {user.role === "admin" && <Menu onPageChange={setActivePage} />}
+          {user.role === "admin" && <Menu />}
           {renderPage()}
         </div>
       ) : (

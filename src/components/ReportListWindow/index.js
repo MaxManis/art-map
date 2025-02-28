@@ -3,10 +3,12 @@ import DatePicker from "react-datepicker";
 import { httpClient } from "../../api/httpClient";
 import { GlobalStateContext } from "../../context/GlobalStateContext";
 import { sourcesToLable } from "../../pages/Table";
+import { CheckMarkIcon } from "../icons";
 import "./ReportsListWindow.css";
 
 export const ReportsListWindow = () => {
   const [dateFilter, setDateFilter] = useState(null);
+  const [dateFilterTo, setDateFilterTo] = useState(null);
   const { state, dispatch } = useContext(GlobalStateContext);
   const { reportsToShow, token, reports } = state;
 
@@ -26,7 +28,7 @@ export const ReportsListWindow = () => {
   const handleItemClick = (item) => {
     dispatch({ type: "SET_REPORTS_TO_SHOW", payload: [item] });
   };
-  const handleTitleClick = () => {
+  const handleFilterReset = () => {
     dispatch({ type: "SET_REPORTS_TO_SHOW", payload: reports });
   };
 
@@ -34,24 +36,61 @@ export const ReportsListWindow = () => {
     let filteredData = reports;
     if (dateFilter) {
       filteredData = filteredData.filter((row) => {
-        const rowDate = new Date(row.eventDate); // Assuming 'date' is the key for the date column
+        const rowDate = new Date(row.eventDate);
+
+        if (dateFilterTo) {
+          const target = rowDate.getTime();
+          const from = dateFilter.getTime();
+          const to = dateFilterTo.getTime();
+
+          const withinRange = target >= from && target <= to;
+          return withinRange;
+        }
+
         return rowDate.toDateString() === dateFilter.toDateString();
       });
     }
 
     dispatch({ type: "SET_REPORTS_TO_SHOW", payload: filteredData });
-  }, [dateFilter]);
+  }, [dateFilter, dateFilterTo]);
 
   return (
     <div className="floating-list-window">
       <div className="floating-list-window-header">
-        <h2 onClick={handleTitleClick}>Звіти ({reportsToShow.length}шт.)</h2>
+        <div className="floating-list-window-header-rows">
+          <div className="floating-list-window-header-row">
+            <span style={{ fontWeight: "bold" }}>Звіти:</span>
+          </div>
+          <div className="floating-list-window-header-row">
+            <span>Усього:</span>
+            <span>{reports.length}шт.</span>
+          </div>
+          <div className="floating-list-window-header-row">
+            <span>Видимі:</span>
+            <span>{reportsToShow.length}шт.</span>
+          </div>
+          <button
+            className="floating-list-window-header-button"
+            onClick={handleFilterReset}
+          >
+            Зкинути фільтри
+          </button>
+        </div>
         <div className="date-filter">
           <DatePicker
             selected={dateFilter}
             onChange={(date) => setDateFilter(date)}
-            placeholderText="Фільтрація за датою"
-            dateFormat="yyyy-MM-dd"
+            placeholderText="Дата від"
+            dateFormat="dd-MM-yyyy"
+            className="date-picker"
+            icon={<CheckMarkIcon />}
+            todayButton={<CheckMarkIcon />}
+          />
+          <DatePicker
+            selected={dateFilterTo}
+            onChange={(date) => setDateFilterTo(date)}
+            placeholderText="Дата до"
+            dateFormat="dd-MM-yyyy"
             className="date-picker"
           />
         </div>

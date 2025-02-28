@@ -18,10 +18,7 @@ import "leaflet/dist/leaflet.css";
 import markerIconPng from "leaflet/dist/images/marker-icon.png";
 import { GlobalStateContext } from "../../context/GlobalStateContext";
 import { httpClient } from "../../api/httpClient";
-import { DrawIcon } from "../icons/Draw";
-import { CheckMarkIcon } from "../icons/CheckMark";
-import { CloseIcon } from "../icons/Close";
-import { PinIcon } from "../icons/Pin";
+import { DrawIcon, CheckMarkIcon, CloseIcon, PinIcon } from "../icons";
 
 const MarkerIcon = new Icon({
   iconUrl: markerIconPng,
@@ -33,8 +30,6 @@ export const Map = () => {
   const mapInitPoint = JSON.parse(
     window.localStorage.getItem("last-report-point"),
   );
-  const [points, setPoints] = useState([]);
-
   const [circles, setCircles] = useState([]);
   const [lines, setLines] = useState([]);
 
@@ -91,12 +86,6 @@ export const Map = () => {
     splitReports();
   }, [reportsToShow]);
 
-  // Handle map click to add points
-  const handleMapClick = (e) => {
-    const { lat, lng } = e.latlng;
-    //setPoints([...points, [lat, lng]]);
-  };
-
   const MapEvents = () => {
     useMapEvents({
       contextmenu: (e) => {
@@ -104,10 +93,12 @@ export const Map = () => {
           setCircleRadiusKm(circleRadiusKm + 2);
           return;
         }
+
         if (drawing) {
           setDrawPoints(() => [...drawPoints.slice(0, drawPoints.length - 1)]);
           return;
         }
+
         setMeasurePoints(() => [
           ...measurePoints,
           [e.latlng.lat, e.latlng.lng],
@@ -231,7 +222,6 @@ export const Map = () => {
         center={mapInitPoint || [48.5, 38.5]}
         zoom={10}
         style={{ height: `100vh` }}
-        onClick={handleMapClick}
       >
         <MapPanes />
         <MapMover />
@@ -261,7 +251,6 @@ export const Map = () => {
                   >
                     {(() => {
                       const mgrsC = forward([markerPoints[1], markerPoints[0]]);
-                      console.log(mgrsC);
                       return mgrsC;
                     })()}
                   </Tooltip>
@@ -269,15 +258,15 @@ export const Map = () => {
               )}
 
               {measurePoints.length > 0 &&
-                measurePoints.map((p) => (
-                  <CircleMarker center={p} color="white">
+                measurePoints.map((p, i) => (
+                  <CircleMarker key={i} center={p} color="white">
                     <Tooltip
                       direction="bottom"
                       offset={[0, 10]}
                       opacity={1}
                       permanent
                     >
-                      {forward([p[1], p[0]])}
+                      <div>{forward([p[1], p[0]])}</div>
                     </Tooltip>
                   </CircleMarker>
                 ))}

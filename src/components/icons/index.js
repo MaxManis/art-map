@@ -4,3 +4,7 @@ export * from "./CheckMark";
 export * from "./Open";
 export * from "./Send";
 export * from "./TrashBox";
+export * from "./Pin";
+export * from "./ResetIcon";
+export * from "./Download";
+export * from "./MapIcon";

@@ -18,6 +18,10 @@
 
 .search-bar {
   margin-bottom: 1.5rem;
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .search-input {
@@ -40,6 +44,11 @@
 .search-input:focus {
   border-color: #ff6b6b;
   /* Bright red for focus */
+}
+
+.search-date {
+  display: flex;
+  gap: 48px;
 }
 
 table {
