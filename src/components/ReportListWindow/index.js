@@ -29,7 +29,8 @@ export const ReportsListWindow = () => {
     dispatch({ type: "SET_REPORTS_TO_SHOW", payload: [item] });
   };
   const handleFilterReset = () => {
-    dispatch({ type: "SET_REPORTS_TO_SHOW", payload: reports });
+    setDateFilter(null);
+    setDateFilterTo(null);
   };
 
   useEffect(() => {

@@ -4,7 +4,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { GlobalStateContext } from "../../context/GlobalStateContext";
 import { saveToCsvFile } from "../../utils/savaToCsvFile";
 import { OpenIcon, ResetIcon, DownloadIcon } from "../icons";
-import "./Table.css"; // Reuse the miltech-style CSS
+import "./Table.css";
 
 export const Table = ({ data, columns: initialColumns }) => {
   const [columns, setColumns] = useState(initialColumns);
@@ -85,7 +85,7 @@ export const Table = ({ data, columns: initialColumns }) => {
     // Apply date filter
     if (dateFilter) {
       filteredData = filteredData.filter((row) => {
-        const rowDate = new Date(row.date); // Assuming 'date' is the key for the date column
+        const rowDate = new Date(row.date);
 
         if (dateFilterTo) {
           const target = rowDate.getTime();
