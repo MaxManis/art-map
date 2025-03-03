@@ -16,9 +16,16 @@ import { forward } from "mgrs";
 import L, { Icon } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import markerIconPng from "leaflet/dist/images/marker-icon.png";
+
 import { GlobalStateContext } from "../../context/GlobalStateContext";
 import { httpClient } from "../../api/httpClient";
-import { DrawIcon, CheckMarkIcon, CloseIcon, PinIcon } from "../icons";
+import {
+  DrawIcon,
+  CheckMarkIcon,
+  CloseIcon,
+  PinIcon,
+  OpenIcon,
+} from "../icons";
 
 const MarkerIcon = new Icon({
   iconUrl: markerIconPng,
@@ -43,6 +50,8 @@ export const Map = () => {
   const [filterCircle, setFilterCircle] = useState(null);
   const [circleRadiusKm, setCircleRadiusKm] = useState(1);
 
+  const [mapMode, setMapMode] = useState(1);
+
   const { state, dispatch } = useContext(GlobalStateContext);
   const { reportsToShow, reports, user, token, lbz } = state;
 
@@ -66,20 +75,8 @@ export const Map = () => {
       const newLbz = await httpClient.get("/lbz", token);
       setDrawPoints([]);
       dispatch({ type: "SET_LBZ", payload: newLbz });
-    } catch (err) { }
+    } catch (err) {}
     dispatch({ type: "SET_LOADING", payload: false });
-  };
-
-  const MapMover = () => {
-    const map = useMapEvents({});
-    useEffect(() => {
-      if (!reportsToShow || reportsToShow.length !== 1) {
-        return;
-      }
-
-      map.panTo([reportsToShow[0].fromLat, reportsToShow[0].fromLng]);
-    }, [reportsToShow]);
-    return null;
   };
 
   useEffect(() => {
@@ -218,32 +215,73 @@ export const Map = () => {
           </>
         )}
       </div>
+
+      <button
+        className="layers-map-button map-admin-panel-button"
+        onClick={() => {
+          setMapMode(() => (mapMode >= 3 ? 1 : mapMode + 1));
+        }}
+      >
+        <div className="button-content-with-icon">
+          <OpenIcon />
+        </div>
+      </button>
+
       <MapContainer
         center={mapInitPoint || [48.5, 38.5]}
         zoom={10}
         style={{ height: `100vh` }}
       >
         <MapPanes />
-        <MapMover />
-        <TileLayer
-          url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
-          attribution="Enemy Artillery Activity Analyzer"
-        />
-        <TileLayer
-          url="https://{s}.tiles.openrailwaymap.org/standard/{z}/{x}/{y}.png"
-          attribution="ReportMap"
-          pane="labels"
-          maxZoom={19}
-          zIndex={650}
-          opacity={0}
-        />
-        <TileLayer
-          url="https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png"
-          attribution="ReportMap"
-          pane="labels"
-          zIndex={650}
-          opacity={1}
-        />
+        <MapMover reportsToShowProp={reportsToShow} />
+        {mapMode === 1 && (
+          <>
+            <TileLayer
+              url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+              attribution="Enemy Artillery Activity Analyzer"
+            />
+            <TileLayer
+              url="https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png"
+              attribution="ReportMap"
+              pane="labels"
+              zIndex={650}
+              opacity={1}
+            />
+          </>
+        )}
+        {mapMode === 2 && (
+          <>
+            <TileLayer
+              url="https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png"
+              attribution="Enemy Artillery Activity Analyzer"
+            />
+            <TileLayer
+              url="https://{s}.tiles.openrailwaymap.org/standard/{z}/{x}/{y}.png"
+              attribution="ReportMap"
+              pane="labels"
+              maxZoom={19}
+              zIndex={650}
+              opacity={1}
+            />
+          </>
+        )}
+        {mapMode === 3 && (
+          <>
+            <TileLayer
+              url="https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png"
+              attribution="Enemy Artillery Activity Analyzer"
+            />
+          </>
+        )}
+        {mapMode === 4 && (
+          <>
+            <TileLayer
+              url="https://tiles.stadiamaps.com/tiles/alidade_satellite/{z}/{x}/{y}{r}.{ext}"
+              attribution="Enemy Artillery Activity Analyzer"
+              ext="jpg"
+            />
+          </>
+        )}
         <MapEvents />
 
         <LayersControl position="topright">
@@ -371,4 +409,21 @@ export const Map = () => {
       </MapContainer>
     </div>
   );
+};
+
+// NOTE: function to move map to a specific report.
+// Its moved out of Map component ot fix a but when map changed all the time
+// and move the map constantly if only one report to show.
+const MapMover = ({ reportsToShowProp }) => {
+  const map = useMapEvents({});
+
+  useEffect(() => {
+    if (!reportsToShowProp || reportsToShowProp.length !== 1) {
+      return;
+    }
+
+    map.panTo([reportsToShowProp[0].fromLat, reportsToShowProp[0].fromLng]);
+  }, [reportsToShowProp]);
+
+  return null;
 };

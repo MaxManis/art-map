@@ -1,9 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
+
 import { httpClient } from "../../api/httpClient";
 import { GlobalStateContext } from "../../context/GlobalStateContext";
 import { sourcesToLable } from "../../pages/Table";
 import { CheckMarkIcon } from "../icons";
+
 import "./ReportsListWindow.css";
 
 export const ReportsListWindow = () => {
@@ -31,6 +33,7 @@ export const ReportsListWindow = () => {
   const handleFilterReset = () => {
     setDateFilter(null);
     setDateFilterTo(null);
+    dispatch({ type: "SET_REPORTS_TO_SHOW", payload: reports });
   };
 
   useEffect(() => {

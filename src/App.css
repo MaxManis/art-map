@@ -435,3 +435,11 @@ lable.toggle-label {
   justify-content: center;
   gap: 8px;
 }
+
+.layers-map-button {
+  position: absolute;
+  top: 62px;
+  right: 10px;
+  width: fit-content;
+  z-index: 1000;
+}
