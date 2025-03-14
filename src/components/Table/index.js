@@ -95,7 +95,7 @@ export const Table = ({ data, columns: initialColumns }) => {
           const withinRange = target >= from && target <= to;
           return withinRange;
         }
-        return rowDate.toDateString() === dateFilter.toDateString();
+        return rowDate.toLocaleString() === dateFilter.toLocaleString();
       });
     }
 
@@ -147,17 +147,21 @@ export const Table = ({ data, columns: initialColumns }) => {
           </div>
 
           <DatePicker
+            showTimeInput
+            timeInputLabel="Час:"
             selected={dateFilter}
             onChange={handleDateFilter}
             placeholderText="Дата від"
-            dateFormat="dd-MM-yyyy"
+            dateFormat="dd-MM-yyyy hh:mm"
             className="date-picker"
           />
           <DatePicker
+            showTimeInput
+            timeInputLabel="Час:"
             selected={dateFilterTo}
             onChange={handleDateToFilter}
             placeholderText="Дата до"
-            dateFormat="dd-MM-yyyy"
+            dateFormat="dd-MM-yyyy hh:mm"
             className="date-picker"
           />
 
@@ -197,7 +201,7 @@ export const Table = ({ data, columns: initialColumns }) => {
                     className="sort-button"
                   >
                     {sortConfig.key === column.key &&
-                      sortConfig.direction === "asc"
+                    sortConfig.direction === "asc"
                       ? "▲"
                       : "▼"}
                   </button>

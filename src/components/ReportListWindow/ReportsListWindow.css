@@ -11,13 +11,17 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
   /* Stronger shadow */
   width: 100%;
-  max-width: 370px;
+  max-width: 380px;
   /* Adjust width as needed */
   max-height: 80vh;
+  min-height: 400px;
   /* Limit height to 80% of viewport */
   overflow-y: auto;
   /* Enable vertical scrolling */
   z-index: 1001;
+
+  display: flex;
+  flex-direction: column;
 }
 
 .floating-list-window-header {

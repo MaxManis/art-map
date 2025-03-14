@@ -51,7 +51,7 @@ export const ReportsListWindow = () => {
           return withinRange;
         }
 
-        return rowDate.toDateString() === dateFilter.toDateString();
+        return rowDate.toLocaleString() === dateFilter.toLocaleString();
       });
     }
 
@@ -82,19 +82,24 @@ export const ReportsListWindow = () => {
         </div>
         <div className="date-filter">
           <DatePicker
+            clearButtonTitle="cc"
+            showTimeInput
+            timeInputLabel="Час:"
             selected={dateFilter}
             onChange={(date) => setDateFilter(date)}
             placeholderText="Дата від"
-            dateFormat="dd-MM-yyyy"
+            dateFormat="dd-MM-yyyy hh:mm"
             className="date-picker"
             icon={<CheckMarkIcon />}
             todayButton={<CheckMarkIcon />}
           />
           <DatePicker
+            showTimeInput
+            timeInputLabel="Час:"
             selected={dateFilterTo}
             onChange={(date) => setDateFilterTo(date)}
             placeholderText="Дата до"
-            dateFormat="dd-MM-yyyy"
+            dateFormat="dd-MM-yyyy hh:mm"
             className="date-picker"
           />
         </div>

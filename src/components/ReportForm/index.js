@@ -14,6 +14,7 @@ import { SendIcon } from "../icons/Send";
 export const ReportForm = ({ setPoints }) => {
   const { state, dispatch } = useContext(GlobalStateContext);
   const { token, loading } = state;
+  const [isShowForm, setIsShowForm] = useState(true);
   const [inputText, setInputText] = useState("");
 
   const [parsedFields, setParsedFields] = useState(["", "", ""]);
@@ -156,8 +157,13 @@ export const ReportForm = ({ setPoints }) => {
     dispatch({ type: "SET_LOADING", payload: false });
   };
 
-  return (
+  return isShowForm ? (
     <div className="parse-form-container">
+      <div
+        onClick={() => setIsShowForm(false)}
+        className="parsed-fields-small-btn"
+      ></div>
+
       {/* Raw Report input */}
       <textarea
         rows={3}
@@ -226,6 +232,12 @@ export const ReportForm = ({ setPoints }) => {
           <SendIcon />
           {loading ? "Чекайте..." : "Надіслати"}
         </div>
+      </button>
+    </div>
+  ) : (
+    <div onClick={() => setIsShowForm(true)} className="parse-form-container">
+      <button onClick={() => setIsShowForm(true)} className="parse-button">
+        Розгорнути
       </button>
     </div>
   );

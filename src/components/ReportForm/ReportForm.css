@@ -117,3 +117,16 @@
   border-color: #ff6b6b;
   /* Bright red for focus */
 }
+
+.parsed-fields-small-btn {
+  position: absolute;
+  top: 5px;
+  right: 24px;
+  border: 5px solid #262626;
+
+  height: 4px;
+  width: 22px;
+  background: orange;
+  margin-bottom: 6px;
+  cursor: pointer;
+}
